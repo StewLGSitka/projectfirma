@@ -6,6 +6,7 @@ CREATE TABLE [dbo].[PerformanceMeasureType](
 	[PerformanceMeasureTypeID] [int] NOT NULL,
 	[PerformanceMeasureTypeName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[PerformanceMeasureTypeDisplayName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[IsUserSelectable] [bit] NOT NULL,
  CONSTRAINT [PK_PerformanceMeasureType_PerformanceMeasureTypeID] PRIMARY KEY CLUSTERED 
 (
 	[PerformanceMeasureTypeID] ASC

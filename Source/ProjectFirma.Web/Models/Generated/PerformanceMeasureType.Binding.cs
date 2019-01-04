@@ -20,6 +20,7 @@ namespace ProjectFirma.Web.Models
     {
         public static readonly PerformanceMeasureTypeAction Action = PerformanceMeasureTypeAction.Instance;
         public static readonly PerformanceMeasureTypeOutcome Outcome = PerformanceMeasureTypeOutcome.Instance;
+        public static readonly PerformanceMeasureTypeNotApplicable NotApplicable = PerformanceMeasureTypeNotApplicable.Instance;
 
         public static readonly List<PerformanceMeasureType> All;
         public static readonly ReadOnlyDictionary<int, PerformanceMeasureType> AllLookupDictionary;
@@ -29,24 +30,26 @@ namespace ProjectFirma.Web.Models
         /// </summary>
         static PerformanceMeasureType()
         {
-            All = new List<PerformanceMeasureType> { Action, Outcome };
+            All = new List<PerformanceMeasureType> { Action, Outcome, NotApplicable };
             AllLookupDictionary = new ReadOnlyDictionary<int, PerformanceMeasureType>(All.ToDictionary(x => x.PerformanceMeasureTypeID));
         }
 
         /// <summary>
         /// Protected constructor only for use in instantiating the set of static lookup values that match database
         /// </summary>
-        protected PerformanceMeasureType(int performanceMeasureTypeID, string performanceMeasureTypeName, string performanceMeasureTypeDisplayName)
+        protected PerformanceMeasureType(int performanceMeasureTypeID, string performanceMeasureTypeName, string performanceMeasureTypeDisplayName, bool isUserSelectable)
         {
             PerformanceMeasureTypeID = performanceMeasureTypeID;
             PerformanceMeasureTypeName = performanceMeasureTypeName;
             PerformanceMeasureTypeDisplayName = performanceMeasureTypeDisplayName;
+            IsUserSelectable = isUserSelectable;
         }
 
         [Key]
         public int PerformanceMeasureTypeID { get; private set; }
         public string PerformanceMeasureTypeName { get; private set; }
         public string PerformanceMeasureTypeDisplayName { get; private set; }
+        public bool IsUserSelectable { get; private set; }
         [NotMapped]
         public int PrimaryKey { get { return PerformanceMeasureTypeID; } }
 
@@ -101,6 +104,8 @@ namespace ProjectFirma.Web.Models
             {
                 case PerformanceMeasureTypeEnum.Action:
                     return Action;
+                case PerformanceMeasureTypeEnum.NotApplicable:
+                    return NotApplicable;
                 case PerformanceMeasureTypeEnum.Outcome:
                     return Outcome;
                 default:
@@ -112,18 +117,25 @@ namespace ProjectFirma.Web.Models
     public enum PerformanceMeasureTypeEnum
     {
         Action = 1,
-        Outcome = 2
+        Outcome = 2,
+        NotApplicable = 3
     }
 
     public partial class PerformanceMeasureTypeAction : PerformanceMeasureType
     {
-        private PerformanceMeasureTypeAction(int performanceMeasureTypeID, string performanceMeasureTypeName, string performanceMeasureTypeDisplayName) : base(performanceMeasureTypeID, performanceMeasureTypeName, performanceMeasureTypeDisplayName) {}
-        public static readonly PerformanceMeasureTypeAction Instance = new PerformanceMeasureTypeAction(1, @"Action", @"Action");
+        private PerformanceMeasureTypeAction(int performanceMeasureTypeID, string performanceMeasureTypeName, string performanceMeasureTypeDisplayName, bool isUserSelectable) : base(performanceMeasureTypeID, performanceMeasureTypeName, performanceMeasureTypeDisplayName, isUserSelectable) {}
+        public static readonly PerformanceMeasureTypeAction Instance = new PerformanceMeasureTypeAction(1, @"Action", @"Action", true);
     }
 
     public partial class PerformanceMeasureTypeOutcome : PerformanceMeasureType
     {
-        private PerformanceMeasureTypeOutcome(int performanceMeasureTypeID, string performanceMeasureTypeName, string performanceMeasureTypeDisplayName) : base(performanceMeasureTypeID, performanceMeasureTypeName, performanceMeasureTypeDisplayName) {}
-        public static readonly PerformanceMeasureTypeOutcome Instance = new PerformanceMeasureTypeOutcome(2, @"Outcome", @"Outcome");
+        private PerformanceMeasureTypeOutcome(int performanceMeasureTypeID, string performanceMeasureTypeName, string performanceMeasureTypeDisplayName, bool isUserSelectable) : base(performanceMeasureTypeID, performanceMeasureTypeName, performanceMeasureTypeDisplayName, isUserSelectable) {}
+        public static readonly PerformanceMeasureTypeOutcome Instance = new PerformanceMeasureTypeOutcome(2, @"Outcome", @"Outcome", true);
+    }
+
+    public partial class PerformanceMeasureTypeNotApplicable : PerformanceMeasureType
+    {
+        private PerformanceMeasureTypeNotApplicable(int performanceMeasureTypeID, string performanceMeasureTypeName, string performanceMeasureTypeDisplayName, bool isUserSelectable) : base(performanceMeasureTypeID, performanceMeasureTypeName, performanceMeasureTypeDisplayName, isUserSelectable) {}
+        public static readonly PerformanceMeasureTypeNotApplicable Instance = new PerformanceMeasureTypeNotApplicable(3, @"Not Applicable", @"Not Applicable", false);
     }
 }

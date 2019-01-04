@@ -95,7 +95,7 @@ namespace ProjectFirma.Web.Controllers
             var submitUrl = ModelObjectHelpers.IsRealPrimaryKeyValue(viewModel.ProjectCustomAttributeTypeID)
                 ? SitkaRoute<ProjectCustomAttributeTypeController>.BuildUrlFromExpression(x => x.Edit(viewModel.ProjectCustomAttributeTypeID))
                 : SitkaRoute<ProjectCustomAttributeTypeController>.BuildUrlFromExpression(x => x.New());
-            var viewData = new EditViewData(CurrentPerson, MeasurementUnitType.All, ProjectCustomAttributeDataType.All,
+            var viewData = new EditViewData(CurrentPerson, MeasurementUnitType.GetAllUserSelectable(), ProjectCustomAttributeDataType.All,
                 submitUrl, instructionsFirmaPage, projectCustomAttributeType);
             return RazorPartialView<Edit, EditViewData, EditViewModel>(viewData, viewModel);
         }

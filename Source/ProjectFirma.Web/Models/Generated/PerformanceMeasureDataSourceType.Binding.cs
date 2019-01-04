@@ -20,6 +20,7 @@ namespace ProjectFirma.Web.Models
     {
         public static readonly PerformanceMeasureDataSourceTypeProject Project = PerformanceMeasureDataSourceTypeProject.Instance;
         public static readonly PerformanceMeasureDataSourceTypeTechnicalAssistanceValue TechnicalAssistanceValue = PerformanceMeasureDataSourceTypeTechnicalAssistanceValue.Instance;
+        public static readonly PerformanceMeasureDataSourceTypeNotApplicable NotApplicable = PerformanceMeasureDataSourceTypeNotApplicable.Instance;
 
         public static readonly List<PerformanceMeasureDataSourceType> All;
         public static readonly ReadOnlyDictionary<int, PerformanceMeasureDataSourceType> AllLookupDictionary;
@@ -29,19 +30,20 @@ namespace ProjectFirma.Web.Models
         /// </summary>
         static PerformanceMeasureDataSourceType()
         {
-            All = new List<PerformanceMeasureDataSourceType> { Project, TechnicalAssistanceValue };
+            All = new List<PerformanceMeasureDataSourceType> { Project, TechnicalAssistanceValue, NotApplicable };
             AllLookupDictionary = new ReadOnlyDictionary<int, PerformanceMeasureDataSourceType>(All.ToDictionary(x => x.PerformanceMeasureDataSourceTypeID));
         }
 
         /// <summary>
         /// Protected constructor only for use in instantiating the set of static lookup values that match database
         /// </summary>
-        protected PerformanceMeasureDataSourceType(int performanceMeasureDataSourceTypeID, string performanceMeasureDataSourceTypeName, string performanceMeasureDataSourceTypeDisplayName, bool isCustomCalculation)
+        protected PerformanceMeasureDataSourceType(int performanceMeasureDataSourceTypeID, string performanceMeasureDataSourceTypeName, string performanceMeasureDataSourceTypeDisplayName, bool isCustomCalculation, bool isUserSelectable)
         {
             PerformanceMeasureDataSourceTypeID = performanceMeasureDataSourceTypeID;
             PerformanceMeasureDataSourceTypeName = performanceMeasureDataSourceTypeName;
             PerformanceMeasureDataSourceTypeDisplayName = performanceMeasureDataSourceTypeDisplayName;
             IsCustomCalculation = isCustomCalculation;
+            IsUserSelectable = isUserSelectable;
         }
 
         [Key]
@@ -49,6 +51,7 @@ namespace ProjectFirma.Web.Models
         public string PerformanceMeasureDataSourceTypeName { get; private set; }
         public string PerformanceMeasureDataSourceTypeDisplayName { get; private set; }
         public bool IsCustomCalculation { get; private set; }
+        public bool IsUserSelectable { get; private set; }
         [NotMapped]
         public int PrimaryKey { get { return PerformanceMeasureDataSourceTypeID; } }
 
@@ -101,6 +104,8 @@ namespace ProjectFirma.Web.Models
         {
             switch (enumValue)
             {
+                case PerformanceMeasureDataSourceTypeEnum.NotApplicable:
+                    return NotApplicable;
                 case PerformanceMeasureDataSourceTypeEnum.Project:
                     return Project;
                 case PerformanceMeasureDataSourceTypeEnum.TechnicalAssistanceValue:
@@ -114,18 +119,25 @@ namespace ProjectFirma.Web.Models
     public enum PerformanceMeasureDataSourceTypeEnum
     {
         Project = 1,
-        TechnicalAssistanceValue = 2
+        TechnicalAssistanceValue = 2,
+        NotApplicable = 3
     }
 
     public partial class PerformanceMeasureDataSourceTypeProject : PerformanceMeasureDataSourceType
     {
-        private PerformanceMeasureDataSourceTypeProject(int performanceMeasureDataSourceTypeID, string performanceMeasureDataSourceTypeName, string performanceMeasureDataSourceTypeDisplayName, bool isCustomCalculation) : base(performanceMeasureDataSourceTypeID, performanceMeasureDataSourceTypeName, performanceMeasureDataSourceTypeDisplayName, isCustomCalculation) {}
-        public static readonly PerformanceMeasureDataSourceTypeProject Instance = new PerformanceMeasureDataSourceTypeProject(1, @"Project", @"Project", false);
+        private PerformanceMeasureDataSourceTypeProject(int performanceMeasureDataSourceTypeID, string performanceMeasureDataSourceTypeName, string performanceMeasureDataSourceTypeDisplayName, bool isCustomCalculation, bool isUserSelectable) : base(performanceMeasureDataSourceTypeID, performanceMeasureDataSourceTypeName, performanceMeasureDataSourceTypeDisplayName, isCustomCalculation, isUserSelectable) {}
+        public static readonly PerformanceMeasureDataSourceTypeProject Instance = new PerformanceMeasureDataSourceTypeProject(1, @"Project", @"Project", false, true);
     }
 
     public partial class PerformanceMeasureDataSourceTypeTechnicalAssistanceValue : PerformanceMeasureDataSourceType
     {
-        private PerformanceMeasureDataSourceTypeTechnicalAssistanceValue(int performanceMeasureDataSourceTypeID, string performanceMeasureDataSourceTypeName, string performanceMeasureDataSourceTypeDisplayName, bool isCustomCalculation) : base(performanceMeasureDataSourceTypeID, performanceMeasureDataSourceTypeName, performanceMeasureDataSourceTypeDisplayName, isCustomCalculation) {}
-        public static readonly PerformanceMeasureDataSourceTypeTechnicalAssistanceValue Instance = new PerformanceMeasureDataSourceTypeTechnicalAssistanceValue(2, @"TechnicalAssistanceValue", @"Technical Assistance Value", true);
+        private PerformanceMeasureDataSourceTypeTechnicalAssistanceValue(int performanceMeasureDataSourceTypeID, string performanceMeasureDataSourceTypeName, string performanceMeasureDataSourceTypeDisplayName, bool isCustomCalculation, bool isUserSelectable) : base(performanceMeasureDataSourceTypeID, performanceMeasureDataSourceTypeName, performanceMeasureDataSourceTypeDisplayName, isCustomCalculation, isUserSelectable) {}
+        public static readonly PerformanceMeasureDataSourceTypeTechnicalAssistanceValue Instance = new PerformanceMeasureDataSourceTypeTechnicalAssistanceValue(2, @"TechnicalAssistanceValue", @"Technical Assistance Value", true, true);
+    }
+
+    public partial class PerformanceMeasureDataSourceTypeNotApplicable : PerformanceMeasureDataSourceType
+    {
+        private PerformanceMeasureDataSourceTypeNotApplicable(int performanceMeasureDataSourceTypeID, string performanceMeasureDataSourceTypeName, string performanceMeasureDataSourceTypeDisplayName, bool isCustomCalculation, bool isUserSelectable) : base(performanceMeasureDataSourceTypeID, performanceMeasureDataSourceTypeName, performanceMeasureDataSourceTypeDisplayName, isCustomCalculation, isUserSelectable) {}
+        public static readonly PerformanceMeasureDataSourceTypeNotApplicable Instance = new PerformanceMeasureDataSourceTypeNotApplicable(3, @"Not Applicable", @"Not Applicable", true, false);
     }
 }

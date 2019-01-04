@@ -88,7 +88,7 @@
         <div class="panel panelFirma">
             <div class="panel-heading panelTitle">
                 <h2>
-                    @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditPerformanceMeasureUrl, string.Format("Edit {0}: {1}", MultiTenantHelpers.GetPerformanceMeasureName(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 1000, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions)
+                    @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditPerformanceMeasureUrl, string.Format("Edit {0}: {1}", MultiTenantHelpers.GetPerformanceMeasureName(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 1000, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions && !ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure())
                     Basics
                 </h2>
             </div>

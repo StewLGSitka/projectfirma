@@ -126,9 +126,9 @@ namespace ProjectFirma.Web.Controllers
 
         private PartialViewResult ViewEdit(EditViewModel viewModel)
         {
-            var measurementUnitTypesAsSelectListItems = MeasurementUnitType.All.OrderBy(x => x.MeasurementUnitTypeDisplayName).ToSelectListWithEmptyFirstRow(x => x.MeasurementUnitTypeID.ToString(CultureInfo.InvariantCulture), x => x.MeasurementUnitTypeDisplayName);
+            var measurementUnitTypesAsSelectListItems = MeasurementUnitType.GetAllUserSelectable().OrderBy(x => x.MeasurementUnitTypeDisplayName).ToSelectListWithEmptyFirstRow(x => x.MeasurementUnitTypeID.ToString(CultureInfo.InvariantCulture), x => x.MeasurementUnitTypeDisplayName);
             var performanceMeasureTypesAsSelectListItems =
-                PerformanceMeasureType.All.OrderBy(x => x.PerformanceMeasureTypeDisplayName)
+                PerformanceMeasureType.GetAllUserSelectable().OrderBy(x => x.PerformanceMeasureTypeDisplayName)
                     .ToSelectListWithEmptyFirstRow(x => x.PerformanceMeasureTypeID.ToString(CultureInfo.InvariantCulture), x => x.PerformanceMeasureTypeDisplayName);
             var viewData = new EditViewData(measurementUnitTypesAsSelectListItems, performanceMeasureTypesAsSelectListItems);
             return RazorPartialView<Edit, EditViewData, EditViewModel>(viewData, viewModel);

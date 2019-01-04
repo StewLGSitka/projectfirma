@@ -18,6 +18,9 @@ GNU Affero General Public License <http://www.gnu.org/licenses/> for more detail
 Source code is available upon request via <support@sitkatech.com>.
 </license>
 -----------------------------------------------------------------------*/
+
+using System.Collections.Generic;
+using System.Linq;
 using LtInfo.Common;
 using LtInfo.Common.Views;
 
@@ -25,6 +28,11 @@ namespace ProjectFirma.Web.Models
 {
     public partial class MeasurementUnitType
     {
+        public static List<MeasurementUnitType> GetAllUserSelectable()
+        {
+            return All.Where(x => x.IsUserSelectable).ToList();
+        }
+
         public virtual string DisplayValue(double? reportedValue)
         {
             return reportedValue.HasValue ? reportedValue.ToGroupedNumeric() : ViewUtilities.NotAvailableString;

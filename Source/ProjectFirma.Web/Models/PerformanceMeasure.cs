@@ -209,7 +209,11 @@ namespace ProjectFirma.Web.Models
         public double? TotalReportedValueWithNonZeroExpenditures(Person currentPerson)
         {
             return SubcategoriesTotalReportedValues(currentPerson).Where(x => x.CalculateWeightedTotalExpenditure() > 0).Sum(x => x.TotalReportedValue);
-        }   
+        }
 
+        public bool IsExternallySourcedPerformanceMeasure()
+        {
+            return !string.IsNullOrWhiteSpace(ExternalDataSourceUrl);
+        }
     }
 }
