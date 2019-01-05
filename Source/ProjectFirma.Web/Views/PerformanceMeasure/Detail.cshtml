@@ -76,11 +76,21 @@
             <a class="btn" href="@ViewDataTyped.PerformanceMeasure.GetInfoSheetUrl()">@FirmaDhtmlxGridHtmlHelpers.FactSheetIcon View Info Sheet</a>
         </div>
     }*@
-<div>
-    <a class="btn backButton" href="@ViewDataTyped.IndexUrl">
-        @BootstrapHtmlHelpers.MakeGlyphIcon("glyphicon-chevron-left")
-        Back to all @MultiTenantHelpers.GetPerformanceMeasureNamePluralized()
-    </a>
+<div class="row">
+    <div class="col-lg-6 col-md-6">
+
+        <a class="btn backButton" href="@ViewDataTyped.IndexUrl">
+            @BootstrapHtmlHelpers.MakeGlyphIcon("glyphicon-chevron-left")
+            Back to all @MultiTenantHelpers.GetPerformanceMeasureNamePluralized()
+        </a>
+    </div>
+    @if (ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure)
+    {
+        <div class="col-lg-6 col-md-6 text-right">
+            This Progress Measure is sourced from an external datasource.
+            <a class="btn" href="@ViewDataTyped.PerformanceMeasure.ExternalDataSourceUrl">Edit it here</a>
+        </div>
+    }
 </div>
 
 <div class="row">
@@ -88,7 +98,7 @@
         <div class="panel panelFirma">
             <div class="panel-heading panelTitle">
                 <h2>
-                    @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditPerformanceMeasureUrl, string.Format("Edit {0}: {1}", MultiTenantHelpers.GetPerformanceMeasureName(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 1000, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions && !ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure())
+                    @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditPerformanceMeasureUrl, string.Format("Edit {0}: {1}", MultiTenantHelpers.GetPerformanceMeasureName(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 1000, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions && !ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure)
                     Basics
                 </h2>
             </div>
@@ -99,11 +109,11 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-5 fieldLabel text-right">@Html.LabelWithSugarFor(FieldDefinition.PerformanceMeasureType, string.Format("{0}", FieldDefinition.PerformanceMeasureType.GetFieldDefinitionLabel()))</div>
-                    <div class="col-xs-7">@ViewDataTyped.PerformanceMeasure.PerformanceMeasureType.PerformanceMeasureTypeDisplayName</div>
+                    <div class="col-xs-7">@ViewDataTyped.PerformanceMeasure.PerformanceMeasureTypeName</div>
                 </div>
                 <div class="row">
                     <div class="col-xs-5 fieldLabel text-right">@Html.LabelWithSugarFor(FieldDefinition.MeasurementUnit, string.Format("{0}", FieldDefinition.MeasurementUnit.GetFieldDefinitionLabel()))</div>
-                    <div class="col-xs-7">@ViewDataTyped.PerformanceMeasure.MeasurementUnitType.SingularDisplayName (@ViewDataTyped.PerformanceMeasure.MeasurementUnitType.MeasurementUnitTypeDisplayName)</div>
+                    <div class="col-xs-7">@ViewDataTyped.PerformanceMeasure.MeasurementUnitTypeName (@ViewDataTyped.PerformanceMeasure.MeasurementUnitTypeName)</div>
                 </div>
                 <div class="row">
                     <div class="col-xs-5 fieldLabel text-right">@Html.LabelWithSugarFor(FieldDefinition.PerformanceMeasureIsAggregatable, string.Format("{0}", FieldDefinition.PerformanceMeasureIsAggregatable.GetFieldDefinitionLabel()))</div>
@@ -139,7 +149,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-5 fieldLabel">
-                        Critical Definitions @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditCriticalDefinitionsUrl, string.Format("Edit Critical Definitions: {0}", ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 800, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions)
+                        Critical Definitions @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditCriticalDefinitionsUrl, string.Format("Edit Critical Definitions: {0}", ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 800, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions && !ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure)
                     </div>
                     <div class="col-xs-7">
                         @ViewDataTyped.PerformanceMeasure.CriticalDefinitionsHtmlString
@@ -148,7 +158,7 @@
                 <hr />
                 <div class="row">
                     <div class="col-xs-5 fieldLabel">
-                        @FieldDefinition.Project.GetFieldDefinitionLabel() Reporting Instructions @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditProjectReportingUrl, string.Format("Edit {0} Reporting: {1}", FieldDefinition.Project.GetFieldDefinitionLabel(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 800, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions)
+                        @FieldDefinition.Project.GetFieldDefinitionLabel() Reporting Instructions @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditProjectReportingUrl, string.Format("Edit {0} Reporting: {1}", FieldDefinition.Project.GetFieldDefinitionLabel(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 800, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions && !ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure)
                     </div>
                     <div class="col-xs-7">
                         @ViewDataTyped.PerformanceMeasure.ProjectReportingHtmlString
@@ -166,7 +176,7 @@
             <div class="panel-heading panelTitle">
                 <h2>
                     @ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditSubcategoriesAndOptionsUrl, string.Format("Edit {0}: {1}",
-                             MultiTenantHelpers.GetPerformanceMeasureName(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 900, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions)
+                             MultiTenantHelpers.GetPerformanceMeasureName(), ViewDataTyped.PerformanceMeasure.PerformanceMeasureDisplayName), 900, ViewDataTyped.UserHasPerformanceMeasureOverviewManagePermissions && !ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure)
                     @Html.LabelWithSugarFor(FieldDefinition.PerformanceMeasureSubcategory, LabelWithSugarForExtensions.DisplayStyle.HelpIconOnly) @FieldDefinition.PerformanceMeasureSubcategory.GetFieldDefinitionLabel()
                 </h2>
             </div>
@@ -208,7 +218,7 @@
     <div class="col-md-6">
         <div class="panel panelFirma">
             <div class="panel-heading panelTitle">
-                <h2>@ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditTaxonomyTiersUrl, string.Format("Edit {0}", ViewDataTyped.TaxonomyTierDisplayNamePluralized), ViewDataTyped.UserHasTaxonomyTierPerformanceMeasureManagePermissions) @ViewDataTyped.TaxonomyTierDisplayNamePluralized</h2>
+                <h2>@ModalDialogFormHelper.MakeEditIconLink(ViewDataTyped.EditTaxonomyTiersUrl, string.Format("Edit {0}", ViewDataTyped.TaxonomyTierDisplayNamePluralized), ViewDataTyped.UserHasTaxonomyTierPerformanceMeasureManagePermissions && !ViewDataTyped.PerformanceMeasure.IsExternallySourcedPerformanceMeasure) @ViewDataTyped.TaxonomyTierDisplayNamePluralized</h2>
             </div>
             <div class="panel-body">
                 @{ RelatedTaxonomyTiers.RenderPartialView(Html, ViewDataTyped.RelatedTaxonomyTiersViewData); }

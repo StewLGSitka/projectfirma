@@ -429,6 +429,7 @@
     <Compile Include="Models\GeospatialAreaType.cs" />
     <Compile Include="Models\IHaveATenantID.cs" />
     <Compile Include="Models\PerformanceMeasureDataSourceTypeTechnicalAssistanceValue.cs" />
+    <Compile Include="Models\PerformanceMeasurePseudo.cs" />
     <Compile Include="Models\PerformanceMeasureType.cs" />
     <Compile Include="Models\ProjectGeospatialAreaTypeNote.cs" />
     <Compile Include="Models\ProjectGeospatialAreaTypeNoteUpdate.cs" />
@@ -437,6 +438,7 @@
     <Compile Include="Models\ProjectStewardshipAreaType.cs" />
     <Compile Include="Models\ProjectUpdateBatchModelExtensions.cs" />
     <Compile Include="Models\ProjectWorkflowSectionGrouping.cs" />
+    <Compile Include="Models\PsInfoProgressMeasure.cs" />
     <Compile Include="Security\ProjectInternalNoteManageAsAdminFeature.cs" />
     <Compile Include="UnitTestCommon\TestGeospatialAreaType.cs" />
     <Compile Include="Views\Home\TrainingVideo.cs" />

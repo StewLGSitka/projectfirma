@@ -22,7 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ClosedXML.Excel;
@@ -78,10 +80,10 @@ namespace ProjectFirma.Web.Controllers
         [PerformanceMeasureViewFeature]
         public ViewResult Detail(PerformanceMeasurePrimaryKey performanceMeasurePrimaryKey)
         {
-            var performanceMeasure = performanceMeasurePrimaryKey.EntityObject;
-            var canManagePerformanceMeasure = new PerformanceMeasureManageFeature().HasPermissionByPerson(CurrentPerson) && performanceMeasure.PerformanceMeasureDataSourceType != PerformanceMeasureDataSourceType.TechnicalAssistanceValue;
+            var performanceMeasurePseudo = GetPerformanceMeasurePseudo(performanceMeasurePrimaryKey.EntityObject);
+            var canManagePerformanceMeasure = new PerformanceMeasureManageFeature().HasPermissionByPerson(CurrentPerson) && performanceMeasurePseudo.PerformanceMeasure.PerformanceMeasureDataSourceType != PerformanceMeasureDataSourceType.TechnicalAssistanceValue;
             
-            var performanceMeasureChartViewData = new PerformanceMeasureChartViewData(performanceMeasure, CurrentPerson, false, true, performanceMeasure.GetAssociatedProjectsWithReportedValues(CurrentPerson));
+            var performanceMeasureChartViewData = new PerformanceMeasureChartViewData(performanceMeasurePseudo.PerformanceMeasure, CurrentPerson, false, true, performanceMeasurePseudo.PerformanceMeasure.GetAssociatedProjectsWithReportedValues(CurrentPerson));
 
             // Avoid scrolling the legend if it can be displayed on two lines
             performanceMeasureChartViewData.ViewGoogleChartViewData.GoogleChartJsons.ForEach(x =>
@@ -92,13 +94,43 @@ namespace ProjectFirma.Web.Controllers
                 }
             });
 
-            var entityNotesViewData = new EntityNotesViewData(EntityNote.CreateFromEntityNote(new List<IEntityNote>(performanceMeasure.PerformanceMeasureNotes)),
-                SitkaRoute<PerformanceMeasureNoteController>.BuildUrlFromExpression(c => c.New(performanceMeasure.PrimaryKey)),
-                performanceMeasure.PerformanceMeasureDisplayName,
+            var entityNotesViewData = new EntityNotesViewData(EntityNote.CreateFromEntityNote(new List<IEntityNote>(performanceMeasurePseudo.PerformanceMeasure.PerformanceMeasureNotes)),
+                SitkaRoute<PerformanceMeasureNoteController>.BuildUrlFromExpression(c => c.New(performanceMeasurePseudo.PerformanceMeasure.PrimaryKey)),
+                performanceMeasurePseudo.PerformanceMeasureDisplayName,
                 canManagePerformanceMeasure);
 
-            var viewData = new DetailViewData(CurrentPerson, performanceMeasure, performanceMeasureChartViewData, entityNotesViewData, canManagePerformanceMeasure);
+            var viewData = new DetailViewData(CurrentPerson, performanceMeasurePseudo, performanceMeasureChartViewData, entityNotesViewData, canManagePerformanceMeasure);
             return RazorView<Detail, DetailViewData>(viewData);
+        }
+
+        private PerformanceMeasurePseudo GetPerformanceMeasurePseudo(PerformanceMeasure entityObject)
+        {
+            if (entityObject.IsExternallySourcedPerformanceMeasure())
+            {
+                //    //make API call
+                //    HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(entityObject.ExternalDataSourceUrl);
+                //    request.Method = "Post";
+                //    request.ContentType = "application/json";
+                //    request.Accept = "application/json";
+
+                //    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                //    response.GetResponseStream();
+                //    using (var streamReader = new StreamReader(response.GetResponseStream()))
+                //    {
+
+                //    } 
+                //    //parse JSON into PsInfoProgressMeasure
+                PsInfoProgressMeasure psInfoProgressMeasure = new PsInfoProgressMeasure()
+                {
+
+                };
+                //call PerformanceMeasurePseudo constructor with 2 options
+                return new PerformanceMeasurePseudo(entityObject, psInfoProgressMeasure);
+            }
+            else
+            {
+                return new PerformanceMeasurePseudo(entityObject);
+            }
         }
 
         [HttpGet]

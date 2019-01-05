@@ -155,10 +155,10 @@ namespace ProjectFirma.Web.Models
             return HasRealSubcategories ? PerformanceMeasureSubcategories.Count : 0;
         }
 
-        public List<GoogleChartJson> GetGoogleChartJsonDictionary(List<Project> projects)
+        public List<GoogleChartJson> GetGoogleChartJsonDictionary(List<Project> projects, bool canCalculateTotal)
         {
             var reportedValues = GetProjectPerformanceMeasureSubcategoryOptionReportedValues(this, projects);
-            var googleChartJsons = PerformanceMeasureSubcategory.MakeGoogleChartJsons(this, reportedValues);
+            var googleChartJsons = PerformanceMeasureSubcategory.MakeGoogleChartJsons(this, reportedValues, canCalculateTotal);
             return googleChartJsons;
         }
 

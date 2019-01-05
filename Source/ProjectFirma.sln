@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectFirma.Web", "ProjectFirma.Web\ProjectFirma.Web.csproj", "{8EB2FDE5-7FBA-4257-919F-11921D2C9615}"
 EndProject
@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{62CA46
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+		ProjectFirma.Web\Controllers\PerformanceMeasureController.cs = ProjectFirma.Web\Controllers\PerformanceMeasureController.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keystone.Common", "Keystone.Common\Keystone.Common.csproj", "{8792E614-C20E-41D6-BDE4-BCB3178FC796}"
@@ -85,5 +86,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24C99CD8-10A5-4CD0-ADF6-F6C60409C828}
 	EndGlobalSection
 EndGlobal

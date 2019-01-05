@@ -54,7 +54,7 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
             PerformanceMeasure = performanceMeasure;
             HyperlinkPerformanceMeasureName = !fromPerformanceMeasureDetailPage;
 
-            GoogleChartJsons = performanceMeasure.GetGoogleChartJsonDictionary(projects);
+            GoogleChartJsons = performanceMeasure.GetGoogleChartJsonDictionary(projects, performanceMeasure.CanCalculateTotal);
 
             var performanceMeasureActuals = PerformanceMeasure.PerformanceMeasureActuals.Where(x => projects.Contains(x.Project)).ToList();
             ChartTotal = performanceMeasureActuals.Any() ? performanceMeasureActuals.Sum(x => x.ActualValue) : (double?) null;

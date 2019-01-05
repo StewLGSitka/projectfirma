@@ -29,7 +29,7 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
 {
     public class DetailViewData : FirmaViewData
     {
-        public Models.PerformanceMeasure PerformanceMeasure { get; }
+        public Models.PerformanceMeasurePseudo PerformanceMeasure { get; }
         public PerformanceMeasureChartViewData PerformanceMeasureChartViewData { get; }
         public EntityNotesViewData EntityNotesViewData { get; }
 
@@ -54,33 +54,33 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
         public string TaxonomyTierDisplayNamePluralized { get; }
 
         public DetailViewData(Person currentPerson,
-            Models.PerformanceMeasure performanceMeasure,
+            Models.PerformanceMeasurePseudo performanceMeasurePseudo,
             PerformanceMeasureChartViewData performanceMeasureChartViewData,
             EntityNotesViewData entityNotesViewData,
             bool userHasPerformanceMeasureManagePermissions) : base(currentPerson)
         {
-            PageTitle = performanceMeasure.PerformanceMeasureDisplayName;
+            PageTitle = performanceMeasurePseudo.PerformanceMeasureDisplayName;
             EntityName = "PerformanceMeasure Detail";
 
-            PerformanceMeasure = performanceMeasure;
+            PerformanceMeasure = performanceMeasurePseudo;
             PerformanceMeasureChartViewData = performanceMeasureChartViewData;
             EntityNotesViewData = entityNotesViewData;
             UserHasPerformanceMeasureOverviewManagePermissions = userHasPerformanceMeasureManagePermissions;
 
-            EditPerformanceMeasureUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.Edit(performanceMeasure));
-            EditSubcategoriesAndOptionsUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.EditSubcategoriesAndOptions(performanceMeasure));
+            EditPerformanceMeasureUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.Edit(performanceMeasurePseudo.PerformanceMeasureID));
+            EditSubcategoriesAndOptionsUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.EditSubcategoriesAndOptions(performanceMeasurePseudo.PerformanceMeasureID));
                 
-            EditCriticalDefinitionsUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.EditPerformanceMeasureRichText(performanceMeasure, EditRtfContent.PerformanceMeasureRichTextType.CriticalDefinitions));
-            EditProjectReportingUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.EditPerformanceMeasureRichText(performanceMeasure, EditRtfContent.PerformanceMeasureRichTextType.ProjectReporting));
+            EditCriticalDefinitionsUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.EditPerformanceMeasureRichText(performanceMeasurePseudo.PerformanceMeasureID, EditRtfContent.PerformanceMeasureRichTextType.CriticalDefinitions));
+            EditProjectReportingUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.EditPerformanceMeasureRichText(performanceMeasurePseudo.PerformanceMeasureID, EditRtfContent.PerformanceMeasureRichTextType.ProjectReporting));
 
             IndexUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(c => c.Index());
             var associatePerformanceMeasureTaxonomyLevel = MultiTenantHelpers.GetAssociatePerformanceMeasureTaxonomyLevel();
             TaxonomyTierDisplayNamePluralized = associatePerformanceMeasureTaxonomyLevel.GetFieldDefinition().GetFieldDefinitionLabelPluralized();
-            UserHasTaxonomyTierPerformanceMeasureManagePermissions = new TaxonomyTierPerformanceMeasureManageFeature().HasPermission(currentPerson, performanceMeasure).HasPermission;
-            EditTaxonomyTiersUrl = SitkaRoute<TaxonomyTierPerformanceMeasureController>.BuildUrlFromExpression(c => c.Edit(performanceMeasure));
-            RelatedTaxonomyTiersViewData = new RelatedTaxonomyTiersViewData(performanceMeasure, associatePerformanceMeasureTaxonomyLevel, true);
+            UserHasTaxonomyTierPerformanceMeasureManagePermissions = new TaxonomyTierPerformanceMeasureManageFeature().HasPermissionByPerson(currentPerson);
+            EditTaxonomyTiersUrl = SitkaRoute<TaxonomyTierPerformanceMeasureController>.BuildUrlFromExpression(c => c.Edit(performanceMeasurePseudo.PerformanceMeasureID));
+            RelatedTaxonomyTiersViewData = new RelatedTaxonomyTiersViewData(performanceMeasurePseudo.PerformanceMeasure, associatePerformanceMeasureTaxonomyLevel, true);
 
-            PerformanceMeasureReportedValuesGridSpec = new PerformanceMeasureReportedValuesGridSpec(performanceMeasure)
+            PerformanceMeasureReportedValuesGridSpec = new PerformanceMeasureReportedValuesGridSpec(performanceMeasurePseudo.PerformanceMeasure)
             {
                 ObjectNameSingular = $"{Models.FieldDefinition.ReportedValue.GetFieldDefinitionLabel()} for {Models.FieldDefinition.Project.GetFieldDefinitionLabel()}",
                 ObjectNamePlural = $"{Models.FieldDefinition.ReportedValue.GetFieldDefinitionLabelPluralized()} for {Models.FieldDefinition.Project.GetFieldDefinitionLabelPluralized()}",
@@ -88,9 +88,9 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
             };
 
             PerformanceMeasureReportedValuesGridName = "performanceMeasuresReportedValuesFromPerformanceMeasureGrid";
-            PerformanceMeasureReportedValuesGridDataUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(tc => tc.PerformanceMeasureReportedValuesGridJsonData(performanceMeasure));
+            PerformanceMeasureReportedValuesGridDataUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(tc => tc.PerformanceMeasureReportedValuesGridJsonData(performanceMeasurePseudo.PerformanceMeasure));
 
-            PerformanceMeasureExpectedGridSpec = new PerformanceMeasureExpectedGridSpec(performanceMeasure)
+            PerformanceMeasureExpectedGridSpec = new PerformanceMeasureExpectedGridSpec(performanceMeasurePseudo.PerformanceMeasure)
             {
                 ObjectNameSingular = $"{Models.FieldDefinition.ExpectedValue.GetFieldDefinitionLabel()} for {Models.FieldDefinition.Project.GetFieldDefinitionLabel()}",
                 ObjectNamePlural = $"{Models.FieldDefinition.ExpectedValue.GetFieldDefinitionLabelPluralized()} for {Models.FieldDefinition.Project.GetFieldDefinitionLabelPluralized()}",
@@ -98,7 +98,7 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
             };
 
             PerformanceMeasureExpectedsGridName = "performanceMeasuresExpectedValuesFromPerformanceMeasureGrid";
-            PerformanceMeasureExpectedsGridDataUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(tc => tc.PerformanceMeasureExpectedsGridJsonData(performanceMeasure));
+            PerformanceMeasureExpectedsGridDataUrl = SitkaRoute<PerformanceMeasureController>.BuildUrlFromExpression(tc => tc.PerformanceMeasureExpectedsGridJsonData(performanceMeasurePseudo.PerformanceMeasure));
         }
 
         public RelatedTaxonomyTiersViewData RelatedTaxonomyTiersViewData { get; }
