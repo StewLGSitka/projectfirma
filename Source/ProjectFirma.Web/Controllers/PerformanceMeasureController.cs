@@ -69,13 +69,19 @@ namespace ProjectFirma.Web.Controllers
         }
 
         [PerformanceMeasureViewFeature]
-        public GridJsonNetJObjectResult<PerformanceMeasure> PerformanceMeasureGridJsonData()
+        public GridJsonNetJObjectResult<PerformanceMeasurePseudo> PerformanceMeasureGridJsonData()
         {
-            var gridSpec = new PerformanceMeasureGridSpec(CurrentPerson);
+            var gridSpec = new PerformanceMeasurePseudoGridSpec(CurrentPerson);
             var performanceMeasures = HttpRequestStorage.DatabaseEntities.PerformanceMeasures.ToList().SortByOrderThenName().ToList();
-            var gridJsonNetJObjectResult = new GridJsonNetJObjectResult<PerformanceMeasure>(performanceMeasures, gridSpec);
+            List<PerformanceMeasurePseudo> performanceMeasuresPseudo = new List<PerformanceMeasurePseudo>();
+            foreach (var performanceMeasure in performanceMeasures)
+            {
+                performanceMeasuresPseudo.Add(GetPerformanceMeasurePseudo(performanceMeasure));
+            }
+            var gridJsonNetJObjectResult = new GridJsonNetJObjectResult<PerformanceMeasurePseudo>(performanceMeasuresPseudo, gridSpec);
             return gridJsonNetJObjectResult;
         }
+
 
         [PerformanceMeasureViewFeature]
         public ViewResult Detail(PerformanceMeasurePrimaryKey performanceMeasurePrimaryKey)
@@ -122,7 +128,15 @@ namespace ProjectFirma.Web.Controllers
                 //    //parse JSON into PsInfoProgressMeasure
                 PsInfoProgressMeasure psInfoProgressMeasure = new PsInfoProgressMeasure()
                 {
-
+                    DefinitionsHtmlString = "TestDefinitionHTMLString".ToHTMLFormattedString(),
+                    IsAggregatable = false,
+                    MeasurementUnitTypeName = "MeasurementUnitTypeName",
+                    ProgressMeasureDataSourceTypeName = "ProgressMeasureDataSourceTypeName",
+                    ProgressMeasureDescription = "ProgressMeasureDescription",
+                    ProgressMeasureID = 13,
+                    ProgressMeasureName = "ProgressMeasureName",
+                    ProgressMeasureTypeName = "ProgressMeasureTypeName",
+                    ReportingGuidanceHtmlString = "ReportingGuidanceHtmlString".ToHTMLFormattedString()
                 };
                 //call PerformanceMeasurePseudo constructor with 2 options
                 return new PerformanceMeasurePseudo(entityObject, psInfoProgressMeasure);
@@ -295,15 +309,15 @@ namespace ProjectFirma.Web.Controllers
         [PerformanceMeasureViewFeature]
         public GridJsonNetJObjectResult<PerformanceMeasureReportedValue> PerformanceMeasureReportedValuesGridJsonData(PerformanceMeasurePrimaryKey performanceMeasurePrimaryKey)
         {
-            var performanceMeasureActuals = GetPerformanceMeasureReportedValuesAndGridSpec(out var gridSpec, performanceMeasurePrimaryKey.EntityObject, CurrentPerson);
+            var performanceMeasureActuals = GetPerformanceMeasureReportedValuesAndGridSpec(out var gridSpec, GetPerformanceMeasurePseudo(performanceMeasurePrimaryKey.EntityObject), CurrentPerson);
             var gridJsonNetJObjectResult = new GridJsonNetJObjectResult<PerformanceMeasureReportedValue>(performanceMeasureActuals, gridSpec);
             return gridJsonNetJObjectResult;
         }
 
-        private static List<PerformanceMeasureReportedValue> GetPerformanceMeasureReportedValuesAndGridSpec(out PerformanceMeasureReportedValuesGridSpec gridSpec, PerformanceMeasure performanceMeasure, Person currentPerson)
+        private static List<PerformanceMeasureReportedValue> GetPerformanceMeasureReportedValuesAndGridSpec(out PerformanceMeasureReportedValuesGridSpec gridSpec, PerformanceMeasurePseudo performanceMeasurePseudo, Person currentPerson)
         {
-            gridSpec = new PerformanceMeasureReportedValuesGridSpec(performanceMeasure);
-            return performanceMeasure.GetReportedPerformanceMeasureValues(currentPerson);
+            gridSpec = new PerformanceMeasureReportedValuesGridSpec(performanceMeasurePseudo);
+            return performanceMeasurePseudo.PerformanceMeasure.GetReportedPerformanceMeasureValues(currentPerson);
         }
 
         [PerformanceMeasureViewFeature]

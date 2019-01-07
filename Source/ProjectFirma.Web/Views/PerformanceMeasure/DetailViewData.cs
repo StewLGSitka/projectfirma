@@ -80,7 +80,7 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
             EditTaxonomyTiersUrl = SitkaRoute<TaxonomyTierPerformanceMeasureController>.BuildUrlFromExpression(c => c.Edit(performanceMeasurePseudo.PerformanceMeasureID));
             RelatedTaxonomyTiersViewData = new RelatedTaxonomyTiersViewData(performanceMeasurePseudo.PerformanceMeasure, associatePerformanceMeasureTaxonomyLevel, true);
 
-            PerformanceMeasureReportedValuesGridSpec = new PerformanceMeasureReportedValuesGridSpec(performanceMeasurePseudo.PerformanceMeasure)
+            PerformanceMeasureReportedValuesGridSpec = new PerformanceMeasureReportedValuesGridSpec(performanceMeasurePseudo)
             {
                 ObjectNameSingular = $"{Models.FieldDefinition.ReportedValue.GetFieldDefinitionLabel()} for {Models.FieldDefinition.Project.GetFieldDefinitionLabel()}",
                 ObjectNamePlural = $"{Models.FieldDefinition.ReportedValue.GetFieldDefinitionLabelPluralized()} for {Models.FieldDefinition.Project.GetFieldDefinitionLabelPluralized()}",

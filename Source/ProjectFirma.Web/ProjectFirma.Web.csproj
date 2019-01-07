@@ -1292,7 +1292,7 @@
     <Compile Include="Views\PerformanceMeasure\PerformanceMeasureChart.cs" />
     <Compile Include="Views\PerformanceMeasure\PerformanceMeasureChartPopup.cs" />
     <Compile Include="Views\PerformanceMeasure\PerformanceMeasureChartViewData.cs" />
-    <Compile Include="Views\PerformanceMeasure\PerformanceMeasureGridSpec.cs" />
+    <Compile Include="Views\PerformanceMeasure\PerformanceMeasurePseudoGridSpec.cs" />
     <Compile Include="Views\PerformanceMeasure\Detail.cs" />
     <Compile Include="Views\PerformanceMeasure\DetailViewData.cs" />
     <Compile Include="Views\Map\ProjectLocationsMapInitJson.cs" />

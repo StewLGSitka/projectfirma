@@ -32,7 +32,7 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
 {
     public class PerformanceMeasureReportedValuesGridSpec : GridSpec<PerformanceMeasureReportedValue>
     {
-        public PerformanceMeasureReportedValuesGridSpec(Models.PerformanceMeasure performanceMeasure)
+        public PerformanceMeasureReportedValuesGridSpec(Models.PerformanceMeasurePseudo performanceMeasurePseudo)
         {
             Add(Models.FieldDefinition.ReportingYear.ToGridHeaderString(), a => a.GetCalendarYearDisplay(), 60, DhtmlxGridColumnFilterType.SelectFilterStrict);
             Add(Models.FieldDefinition.Project.ToGridHeaderString(),
@@ -46,10 +46,10 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
             }
             Add(Models.FieldDefinition.IsPrimaryContactOrganization.ToGridHeaderString(), x => x.Project.GetPrimaryContactOrganization().GetShortNameAsUrl(), 150, DhtmlxGridColumnFilterType.Html);
             Add(Models.FieldDefinition.ProjectStage.ToGridHeaderString(), a => a.Project.ProjectStage.ProjectStageDisplayName, 90, DhtmlxGridColumnFilterType.SelectFilterStrict);
-            if (performanceMeasure.HasRealSubcategories)
+            if (performanceMeasurePseudo.HasRealSubcategories)
             {
                 foreach (var performanceMeasureSubcategory in
-                    performanceMeasure.PerformanceMeasureSubcategories.OrderBy(x =>
+                    performanceMeasurePseudo.PerformanceMeasureSubcategories.OrderBy(x =>
                         x.PerformanceMeasureSubcategoryDisplayName))
                 {
                     Add(performanceMeasureSubcategory.PerformanceMeasureSubcategoryDisplayName,
@@ -69,9 +69,9 @@ namespace ProjectFirma.Web.Views.PerformanceMeasure
                         }, 120, DhtmlxGridColumnFilterType.SelectFilterStrict);
                 }
             }
-            var reportedValueColumnName = $"{Models.FieldDefinition.ReportedValue.ToGridHeaderString()} ({performanceMeasure.MeasurementUnitType.MeasurementUnitTypeDisplayName})";
+            var reportedValueColumnName = $"{Models.FieldDefinition.ReportedValue.ToGridHeaderString()} ({performanceMeasurePseudo.MeasurementUnitTypeName})";
 
-            if (performanceMeasure.IsAggregatable)
+            if (performanceMeasurePseudo.IsAggregatable)
             {
                 Add(reportedValueColumnName, a => a.ReportedValue, 150, DhtmlxGridColumnFormatType.Decimal,
                     DhtmlxGridColumnAggregationType.Total);
